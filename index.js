@@ -25,7 +25,7 @@ async function run() {
     const serviceCollection = client.db("my-life-guide").collection("services");
     const reviewsCollection = client.db("my-life-guide").collection("reviews");
 
-    app.post("/add", async (req, res) => {
+    app.post("/add-service", async (req, res) => {
       const service = req.body;
       const result = await serviceCollection.insertOne(service);
       res.send(result);
@@ -34,9 +34,16 @@ async function run() {
 
     app.get("/services", async (req, res) => {
       const query = {};
-      const cursor = serviceCollection.find(query);
+      const cursor = serviceCollection.find(query).sort({ published: -1 });
       const services = await cursor.toArray();
       res.send(services);
+    });
+
+    app.get("/services/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const service = await serviceCollection.findOne(query);
+      res.send(service);
     });
   } finally {
   }
