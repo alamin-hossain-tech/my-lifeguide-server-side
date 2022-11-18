@@ -29,7 +29,6 @@ async function run() {
       const service = req.body;
       const result = await serviceCollection.insertOne(service);
       res.send(result);
-      console.log(result);
     });
 
     app.get("/services", async (req, res) => {
@@ -44,6 +43,20 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const service = await serviceCollection.findOne(query);
       res.send(service);
+    });
+
+    app.post("/addreview", async (req, res) => {
+      const review = req.body;
+      const result = await reviewsCollection.insertOne(review);
+      res.send(result);
+    });
+
+    app.get("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { serviceId: id };
+      console.log(query);
+      const reviews = await reviewsCollection.find(query).toArray();
+      res.send(reviews);
     });
   } finally {
   }
