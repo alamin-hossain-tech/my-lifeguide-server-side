@@ -48,6 +48,15 @@ async function run() {
 
     app.get("/services", async (req, res) => {
       const query = {};
+      const cursor = serviceCollection
+        .find(query)
+        .sort({ published: -1 })
+        .limit(3);
+      const services = await cursor.toArray();
+      res.send(services);
+    });
+    app.get("/servicesall", async (req, res) => {
+      const query = {};
       const cursor = serviceCollection.find(query).sort({ published: -1 });
       const services = await cursor.toArray();
       res.send(services);
