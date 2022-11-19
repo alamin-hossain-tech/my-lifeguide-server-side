@@ -45,18 +45,24 @@ async function run() {
       res.send(service);
     });
 
+    // Reviews Api
     app.post("/addreview", async (req, res) => {
       const review = req.body;
       const result = await reviewsCollection.insertOne(review);
       res.send(result);
     });
-
     app.get("/reviews/:id", async (req, res) => {
       const id = req.params.id;
       const query = { serviceId: id };
       console.log(query);
       const reviews = await reviewsCollection.find(query).toArray();
       res.send(reviews);
+    });
+    app.get("/userreviews/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      const query = { userEmail: userEmail };
+      result = await reviewsCollection.find(query).toArray();
+      res.send(result);
     });
   } finally {
   }
