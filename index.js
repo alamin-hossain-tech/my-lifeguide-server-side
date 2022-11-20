@@ -79,7 +79,10 @@ async function run() {
       const id = req.params.id;
       const query = { serviceId: id };
 
-      const reviews = await reviewsCollection.find(query).toArray();
+      const reviews = await reviewsCollection
+        .find(query)
+        .sort({ publishedTime: -1 })
+        .toArray();
       res.send(reviews);
     });
     app.get("/userreviews/:email", verifyJWT, async (req, res) => {
